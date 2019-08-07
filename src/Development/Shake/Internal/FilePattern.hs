@@ -22,6 +22,7 @@ import Control.Monad
 import Data.Char
 import Data.Maybe
 import System.Info.Extra
+import System.FilePattern hiding (match, substitute)
 
 
 -- | A type synonym for file patterns, containing @\/\/@ and @*@. For the syntax
@@ -39,7 +40,7 @@ import System.Info.Extra
 --
 -- * If the second argument of 'Development.Shake.FilePath.</>' has a leading path separator (namely @\/@)
 --   then the second argument will be returned.
-type FilePattern = String
+-- type FilePattern = String
 
 infixr 5 <//>
 
@@ -219,12 +220,12 @@ matchStars p _ = throwImpure $ errorInternal $ "unreachablePattern, matchStars "
 --
 --   Patterns with constructs such as @foo\/..\/bar@ will never match
 --   normalised 'FilePath' values, so are unlikely to be correct.
-(?==) :: FilePattern -> FilePath -> Bool
-(?==) p = case optimise $ parse p of
-    [x] | x == Skip || x == Skip1 -> if rp then isRelativePath else const True
-    p -> let f = not . null . match p . split isPathSeparator
-         in if rp then (\x -> isRelativePath x && f x) else f
-    where rp = isRelativePattern p
+-- (?==) :: FilePattern -> FilePath -> Bool
+-- (?==) p = case optimise $ parse p of
+--     [x] | x == Skip || x == Skip1 -> if rp then isRelativePath else const True
+--     p -> let f = not . null . match p . split isPathSeparator
+--          in if rp then (\x -> isRelativePath x && f x) else f
+--     where rp = isRelativePattern p
 
 (?==*) :: [FilePattern] -> FilePath -> Bool
 (?==*) ps = \x -> any ($ x) vs

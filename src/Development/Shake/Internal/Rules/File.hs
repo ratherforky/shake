@@ -6,7 +6,7 @@ module Development.Shake.Internal.Rules.File(
     trackRead, trackWrite, trackAllow, produces,
     defaultRuleFile,
     (%>), (|%>), (?>), phony, (~>), phonys,
-    resultHasChanged,
+    resultHasChanged, root,
     -- * Internal only
     FileQ(..), FileA(..), fileStoredValue, fileEqualValue, EqualCost(..), fileForward
     ) where

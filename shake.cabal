@@ -126,6 +126,9 @@ library
         Development.Shake.Forward
         Development.Shake.Rule
         Development.Shake.Util
+        Development.Shake.Internal.FilePattern
+        Development.Shake.Internal.Rules.File
+        General.Extra
 
     other-modules:
         Development.Ninja.Env
@@ -157,7 +160,6 @@ library
         Development.Shake.Internal.Errors
         Development.Shake.Internal.FileInfo
         Development.Shake.Internal.FileName
-        Development.Shake.Internal.FilePattern
         Development.Shake.Internal.Options
         Development.Shake.Internal.Paths
         Development.Shake.Internal.Profile
@@ -165,7 +167,6 @@ library
         Development.Shake.Internal.Resource
         Development.Shake.Internal.Rules.Default
         Development.Shake.Internal.Rules.Directory
-        Development.Shake.Internal.Rules.File
         Development.Shake.Internal.Rules.Files
         Development.Shake.Internal.Rules.Oracle
         Development.Shake.Internal.Rules.OrderOnly
@@ -177,7 +178,6 @@ library
         General.Cleanup
         General.Fence
         General.EscCodes
-        General.Extra
         General.FileLock
         General.GetOpt
         General.Ids

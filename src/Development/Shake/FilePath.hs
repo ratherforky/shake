@@ -115,7 +115,7 @@ makeRelativeEx pathA pathB
 --   This function is not based on the 'normalise' function from the @filepath@ library, as that function
 --   is quite broken.
 normaliseEx :: FilePath -> FilePath
-normaliseEx xs | a:b:xs <- xs, isWindows && sep a && sep b = '/' : f ('/':xs) -- account for UNC paths being double //
+normaliseEx xs | a:b:xs <- xs, isWindows && sep a && sep b = '/' : f ('/':xs) -- account for UNC paths being double 
                | otherwise = f xs
     where
         sep = Native.isPathSeparator

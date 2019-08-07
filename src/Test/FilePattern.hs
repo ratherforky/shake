@@ -1,7 +1,8 @@
 
 module Test.FilePattern(main) where
 
-import Development.Shake.Internal.FilePattern
+import Development.Shake.Internal.FilePattern hiding ((?==))
+import System.FilePattern as SFP ((?==))
 import Development.Shake.FilePath
 import Control.Monad
 import System.IO.Unsafe
@@ -10,7 +11,12 @@ import Data.List.Extra
 import Test.Type
 import Test.QuickCheck hiding ((===))
 
-
+(?==) :: FilePattern -> FilePath -> Bool
+(?==) pat = (SFP.?==) (convert pat)
+  where
+    convert :: FilePattern -> FilePattern
+    convert ('/':'/':ps) = concat ["**/", (replace "//" "**" ps)]
+    convert ps           = replace "//" "**" ps
 
 newtype Pattern = Pattern FilePattern deriving (Show,Eq)
 newtype Path    = Path    FilePath    deriving (Show,Eq)
@@ -30,7 +36,7 @@ main = testSimple $ do
     internalTest
     let norm = filter (/= ".") . split isPathSeparator
     let f b pat file = do
-            assertBool (b == (pat ?== file)) $ show pat ++ " ?== " ++ show file ++ "\nEXPECTED: " ++ show b
+            assertBool (b == (pat Test.FilePattern.?== file)) $ show pat ++ " ?== " ++ show file ++ "\nEXPECTED: " ++ show b
             assertBool (b == (pat `walker` file)) $ show pat ++ " `walker` " ++ show file ++ "\nEXPECTED: " ++ show b
             when b $ assertBool (norm (substitute (extract pat file) pat) == norm file) $
                 "FAILED substitute/extract property\nPattern: " ++ show pat ++ "\nFile: " ++ show file ++ "\n" ++
@@ -199,7 +205,7 @@ main = testSimple $ do
         let label _ = property in
             -- Ignore label to workaround QuickCheck space-leak
             -- See #450 and https://github.com/nick8325/quickcheck/pull/93
-        let b = p ?== x in (if b then property else label "No match") $ unsafePerformIO $ do f b p x; return True
+        let b = p Test.FilePattern.?== x in (if b then property else label "No match") $ unsafePerformIO $ do f b p x; return True
     return ()
 
 
